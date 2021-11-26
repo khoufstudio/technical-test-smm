@@ -18,9 +18,7 @@ class CustomerFactory extends Factory
         return [
             'name' => $this->faker->name(),
             'departement' => $this->faker->departmentName(),
-            //'departement' => $this->faker->name(),
             'nik' => $this->faker->nik()            
-            //'nik' => $this->faker->numerify('################')
         ];
     }
 }
