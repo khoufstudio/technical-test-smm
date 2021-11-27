@@ -9,4 +9,9 @@ class ProductRequest extends Model
 {
     use HasFactory;
     protected $fillable = ['customer_id', 'date_product_request'];
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
 }
