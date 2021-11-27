@@ -29,16 +29,16 @@
         <pagination align="right" :data="productRequests" @pagination-change-page="list"></pagination>
 
         <div id="productModal" class="modal" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header bg-primary">
-                        <h5 class="modal-title text-white">Tambah Permintaan Barang</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
+            <form @submit.prevent="addProductRequest">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header bg-primary">
+                            <h5 class="modal-title text-white">Tambah Permintaan Barang</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
                             <div class="row">
                                 <div class="col">
                                     <div class="form-group">
@@ -60,21 +60,26 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <label class="mb-0" for="departemen">Departemen:</label>
-                                        <input type="text" class="form-control" placeholder="departemen" id="departemen" disabled="" v-model="departement">
+                                        <input type="text" class="form-control" placeholder="Departemen" id="departemen" disabled="" v-model="departement">
                                     </div>
                                 </div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col-4"><input type="date" class="form-control"></div>
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label class="mb-0" for="tanggal_permintaan">Tanggal Permintaan:</label>
+                                       <input type="date" class="form-control" v-model="orderDate">
+                                    </div>
+                                </div>
                             </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">Proses</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Proses</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </template>
@@ -93,7 +98,9 @@
            currentPage: 1,
            options: [],
            name: '',
-           departement: ''
+           departement: '',
+           orderDate: '',
+           idCustomer: ''
          }
         },
         mounted() {
@@ -109,6 +116,9 @@
                  console.error(response)
               })
            },
+           addProductRequest() {
+               alert('coy')
+           },
            deleteProduct(id){
                this.$swal({
                    title: 'Apakah Anda yakin akan menghapus',
@@ -123,15 +133,22 @@
                    }
                }) 
            },
-           setSelected() {
-               this.name = this.options[0].name
-               this.departement = this.options[0].departement
+           setSelected(event) {
+               if (event) {
+                   this.name = event.name
+                   this.departement = event.departement
+                   this.idCustomer = event.id
+               } else {
+                   this.name = ''
+                   this.departement = ''
+                   this.idCustomer = ''
+               }
            },
            onSearch(search, loading) {
                if (search.length) {
                    loading(true)
                    this.search(loading, search, this)
-               }
+               } 
            },
            search: _.debounce((loading, search, vm) => {
                axios.get(`http://localhost:8000/api/customer/nik/${search}`).then(res =>{
