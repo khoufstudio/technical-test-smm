@@ -12,7 +12,7 @@ class CustomerController extends Controller
     */
     public function nik($nik)
     {
-        $result = Customer::where('nik', 'LIKE', '%'. $nik. '%')->get();
+        $result = Customer::select('id', 'nik as label', 'departement', 'name')->where('nik', 'LIKE', '%'. $nik. '%')->get();
 
         if(count($result)){
             return Response()->json($result);
