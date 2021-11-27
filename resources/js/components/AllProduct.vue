@@ -111,8 +111,8 @@
                                                 <td><input class="form-control" type="text"></td>
                                                 <td><span class="badge badge-success">Terpenuhi</span></td>
                                                 <td>
-                                                    <button class="btn btn-sm btn-danger rounded-circle">
-                                                        <font-awesome-icon icon="times" />
+                                                    <button class="btn rounded-circle">
+                                                        <font-awesome-icon class="text-secondary" icon="times-circle" />
                                                     </button>
                                                 </td>
                                             </tr>
