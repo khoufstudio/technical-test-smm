@@ -1,7 +1,10 @@
 <template>
     <div>
         <h2 class="text-center">Permintaan Barang</h2>
-        <button class="btn btn-success float-right mb-2" data-toggle="modal" data-target="#productModal" data-backdrop="static" data-keyboard="false">Tambah</button>
+        <button class="btn btn-success float-right mb-2" data-toggle="modal" data-target="#productModal" data-backdrop="static" data-keyboard="false">
+            <font-awesome-icon icon="plus" />
+            Tambah
+        </button>
         <table class="table">
             <thead>
                 <tr>
@@ -75,32 +78,52 @@
 
                             <div class="row">
                                 <div class="col">
+                                    <h4>Daftar Barang</h4>
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">Barang</th>
-                                                <th scope="col">Lokasi</th>
-                                                <th scope="col">Tersedia</th>
-                                                <th scope="col">Kuantiti</th>
-                                                <th scope="col">Keterangan</th>
-                                                <th scope="col">Status</th>
-                                                <th scope="col">*</th>
+                                                <th>#</th>
+                                                <th style="width: 250px;">Barang</th>
+                                                <th>Lokasi</th>
+                                                <th>Tersedia</th>
+                                                <th>Kuantiti</th>
+                                                <th>Satuan</th>
+                                                <th>Keterangan</th>
+                                                <th>Status</th>
+                                                <th class="text-center" style="width: 5px;">*</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <th scope="row">1</th>
-                                                <td>Mark</td>
-                                                <td>Otto</td>
-                                                <td>@mdo</td>
-                                                <td>@mdo</td>
-                                                <td>@mdo</td>
-                                                <td>@mdo</td>
-                                                <td>@mdo</td>
+                                            <tr v-for="(product, index) in products" :key="index">
+                                                <th scope="row">{{++index}}</th>
+                                                <td>
+                                                    <v-select 
+                                                        :filterable="false" 
+                                                        :options="optionProducts" 
+                                                        @search="onSearchProduct" 
+                                                        @input="setSelectedProduct" 
+                                                    ></v-select>
+                                                </td>
+                                                <td><input class="form-control" type="text" disabled=""></td>
+                                                <td><input class="form-control" type="text" disabled=""></td>
+                                                <td><input class="form-control" type="text"></td>
+                                                <td><input class="form-control" type="text" disabled=""></td>
+                                                <td><input class="form-control" type="text"></td>
+                                                <td><span class="badge badge-success">Terpenuhi</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-danger rounded-circle">
+                                                        <font-awesome-icon icon="times" />
+                                                    </button>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
+                                    <div class="d-flex justify-content-end">
+                                        <button type="button" class="btn btn-success" @click="addInputProduct">
+                                            <font-awesome-icon icon="plus" />
+                                            Tambah
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -128,10 +151,12 @@
            productRequests:[],
            currentPage: 1,
            options: [],
+           optionProducts: [],
            name: '',
            departement: '',
            orderDate: '',
-           idCustomer: ''
+           idCustomer: '',
+           products: [1]
          }
         },
         mounted() {
@@ -146,6 +171,9 @@
               }).catch(({ response })=>{
                  console.error(response)
               })
+           },
+           addInputProduct() {
+               this.products.push(1)
            },
            addProductRequest() {
                if (this.orderDate == '' || this.idCustomer == '') {
@@ -194,6 +222,31 @@
                } 
            },
            search: _.debounce((loading, search, vm) => {
+               axios.get(`http://localhost:8000/api/customer/nik/${search}`).then(res =>{
+                   if (res) {
+                       vm.options = res.data
+                   }
+                   loading(false)
+               })
+           }),
+           setSelectedProduct(event) {
+               if (event) {
+                   this.name = event.name
+                   this.departement = event.departement
+                   this.idCustomer = event.id
+               } else {
+                   this.name = ''
+                   this.departement = ''
+                   this.idCustomer = ''
+               }
+           },
+           onSearchProduct(search, loading) {
+               if (search.length) {
+                   loading(true)
+                   this.search(loading, search, this)
+               } 
+           },
+           searchProduct: _.debounce((loading, search, vm) => {
                axios.get(`http://localhost:8000/api/customer/nik/${search}`).then(res =>{
                    if (res) {
                        vm.options = res.data

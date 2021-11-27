@@ -25,7 +25,7 @@ import VueRouter from 'vue-router';
 import VueSweetalert2 from 'vue-sweetalert2';
 import vSelect from 'vue-select'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
+import { faTimes, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 import axios from 'axios';
@@ -33,7 +33,7 @@ import {
     routes
 } from './routes';
 
-library.add(faUserSecret)
+library.add(faTimes, faPlus)
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
