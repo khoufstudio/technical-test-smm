@@ -23,6 +23,8 @@ import App from './App.vue';
 import VueAxios from 'vue-axios';
 import VueRouter from 'vue-router';
 import VueSweetalert2 from 'vue-sweetalert2';
+import vSelect from 'vue-select'
+
 import axios from 'axios';
 import {
     routes
@@ -34,12 +36,13 @@ import {
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-// If you don't need the styles, do not connect
 import 'sweetalert2/dist/sweetalert2.min.css';
+import 'vue-select/dist/vue-select.css';
 
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
 Vue.use(VueSweetalert2);
+Vue.component('v-select', vSelect)
 
 const router = new VueRouter({
     mode: 'history',
