@@ -43,19 +43,24 @@
                                 <div class="col">
                                     <div class="form-group">
                                         <label for="nama">NIK Peminta:</label>
-                                        <v-select :options="options"></v-select>
+                                        <v-select 
+                                            :filterable="false" 
+                                            :options="options" 
+                                            @search="onSearch" 
+                                            @input="setSelected" 
+                                        ></v-select>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="form-group">
                                         <label for="nama">Nama:</label>
-                                        <input type="text" class="form-control" placeholder="Nama" id="nama" disabled="">
+                                        <input type="text" class="form-control" placeholder="Nama" id="nama" disabled="" v-model="name">
                                     </div>
                                 </div>                                
                                 <div class="col">
                                     <div class="form-group">
-                                        <label for="nama">Departemen:</label>
-                                        <input type="text" class="form-control" placeholder="Nama" id="nama" disabled="">
+                                        <label for="departemen">Departemen:</label>
+                                        <input type="text" class="form-control" placeholder="Nama" id="departemen" disabled="" v-model="departement">
                                     </div>
                                 </div>
                             </div>
@@ -76,6 +81,8 @@
 
 <script>
     import pagination from 'laravel-vue-pagination'
+    import _ from 'lodash'
+
     export default {
        components: {
            pagination
@@ -84,21 +91,18 @@
          return{
            productRequests:[],
            currentPage: 1,
-           options: [
-              'foo',
-              'bar',
-              'baz'
-           ]
-
+           options: [],
+           name: '',
+           departement: ''
          }
         },
         mounted() {
             this.list()
         },
 
-        methods:{
+        methods: {
            async list(page = 1) {
-              await axios.get(`http://localhost:8000/api/product_requests?page=${page}`).then(({data})=>{
+              await axios.get(`http://localhost:8000/api/product_requests?page=${page}`).then(({data})=> {
                  this.productRequests = data
                  this.currentPage = page > 1 ? page * 10 + 1 : page
               }).catch(({ response })=>{
@@ -118,7 +122,25 @@
                        });
                    }
                }) 
-            }
-        }
+           },
+           setSelected() {
+               this.name = this.options[0].name
+               this.departement = this.options[0].departement
+           },
+           onSearch(search, loading) {
+               if (search.length) {
+                   loading(true)
+                   this.search(loading, search, this)
+               }
+           },
+           search: _.debounce((loading, search, vm) => {
+               axios.get(`http://localhost:8000/api/customer/nik/${search}`).then(res =>{
+                   if (res) {
+                       vm.options = res.data
+                   }
+                   loading(false)
+               })
+           })
+        },
     } 
 </script>
