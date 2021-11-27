@@ -14,7 +14,19 @@ class ProductRequestController extends Controller
         return response()->json($productRequests);
     }
 
-    public function destroy($id) {
+    public function store(Request $request)
+    {
+        $productRequest = new ProductRequest([
+            'customer_id' => $request->input('idCustomer'),
+            'date_product_request' => $request->input('orderDate') 
+        ]);
+        $productRequest->save();
+
+        return response()->json('Product Request created!');
+    }
+
+    public function destroy($id)
+    {
         $productRequest = ProductRequest::find($id);
         $productRequest->delete();
 
