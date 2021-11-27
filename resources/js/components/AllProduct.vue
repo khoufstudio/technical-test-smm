@@ -42,7 +42,7 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="form-group">
-                                        <label for="nama">NIK Peminta:</label>
+                                        <label class="mb-0" for="nama">NIK Peminta:</label>
                                         <v-select 
                                             :filterable="false" 
                                             :options="options" 
@@ -53,19 +53,19 @@
                                 </div>
                                 <div class="col">
                                     <div class="form-group">
-                                        <label for="nama">Nama:</label>
+                                        <label class="mb-0" for="nama">Nama:</label>
                                         <input type="text" class="form-control" placeholder="Nama" id="nama" disabled="" v-model="name">
                                     </div>
                                 </div>                                
                                 <div class="col">
                                     <div class="form-group">
-                                        <label for="departemen">Departemen:</label>
-                                        <input type="text" class="form-control" placeholder="Nama" id="departemen" disabled="" v-model="departement">
+                                        <label class="mb-0" for="departemen">Departemen:</label>
+                                        <input type="text" class="form-control" placeholder="departemen" id="departemen" disabled="" v-model="departement">
                                     </div>
                                 </div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col-4"><input type="text" class="form-control" placeholder="Nama"></div>
+                                <div class="col-4"><input type="date" class="form-control"></div>
                             </div>
                         </form>
                     </div>
