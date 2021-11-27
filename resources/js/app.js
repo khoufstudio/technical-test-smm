@@ -22,6 +22,7 @@ window.Vue = require('vue').default;
 import App from './App.vue';
 import VueAxios from 'vue-axios';
 import VueRouter from 'vue-router';
+import VueSweetalert2 from 'vue-sweetalert2';
 import axios from 'axios';
 import {
     routes
@@ -33,8 +34,12 @@ import {
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+// If you don't need the styles, do not connect
+import 'sweetalert2/dist/sweetalert2.min.css';
+
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
+Vue.use(VueSweetalert2);
 
 const router = new VueRouter({
     mode: 'history',
