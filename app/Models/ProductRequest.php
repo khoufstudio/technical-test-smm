@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class ProductRequest extends Model
 {
     use HasFactory;
+    protected $fillable = ['customer_id', 'date_product_request'];
 }
