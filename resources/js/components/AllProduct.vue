@@ -18,7 +18,7 @@
                     <td>{{ productRequest.date_product_request }}</td>
                     <td>
                         <div class="btn-group" role="group">
-                            <router-link :to="{name: 'edit', params: {id: productRequest.id}}" class="btn btn-success">Edit</router-link>
+                            <router-link :to="{name: 'edit', params: {id: productRequest.id}}" class="btn btn-primary">Edit</router-link>
                             <button class="btn btn-danger" @click="deleteProduct(productRequest.id)">Hapus</button>
                         </div>
                     </td>
@@ -78,7 +78,6 @@
               })
            },
            deleteProduct(id){
-               debugger
                this.$swal({
                    title: 'Apakah Anda yakin akan menghapus',
                    showCloseButton: true,
