@@ -9,7 +9,7 @@ class ProductRequestController extends Controller
 {
     public function index()
     {
-        $productRequests = ProductRequest::with('customer')->paginate(10);
+        $productRequests = ProductRequest::with('customer')->paginate(5);
 
         return response()->json($productRequests);
     }
