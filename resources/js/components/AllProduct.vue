@@ -111,7 +111,7 @@
            async list(page = 1) {
               await axios.get(`http://localhost:8000/api/product_requests?page=${page}`).then(({data})=> {
                  this.productRequests = data
-                 this.currentPage = page > 1 ? page * 10 + 1 : page
+                 this.currentPage = page > 1 ? (page-1) * 5 + 1 : page
               }).catch(({ response })=>{
                  console.error(response)
               })
