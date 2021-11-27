@@ -10,6 +10,14 @@ class ProductRequestController extends Controller
     public function index()
     {
         $productRequests = ProductRequest::with('customer')->paginate(10);
+
         return response()->json($productRequests);
+    }
+
+    public function destroy($id) {
+        $productRequest = ProductRequest::find($id);
+        $productRequest->delete();
+
+        return response()->json('Product deleted!');
     }
 }

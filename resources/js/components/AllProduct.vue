@@ -19,7 +19,7 @@
                     <td>
                         <div class="btn-group" role="group">
                             <router-link :to="{name: 'edit', params: {id: productRequest.id}}" class="btn btn-success">Edit</router-link>
-                            <button class="btn btn-danger" @click="deleteProduct(productRequest.id)">Delete</button>
+                            <button class="btn btn-danger" @click="deleteProduct(productRequest.id)">Hapus</button>
                         </div>
                     </td>
                 </tr>
@@ -60,9 +60,7 @@
        },
        data(){
          return{
-           productRequests:[
-             {id: 1, name: 'coy', detail: 'cuy'}
-           ],
+           productRequests:[],
            currentPage: 1
          }
         },
@@ -80,10 +78,20 @@
               })
            },
            deleteProduct(id){
-                this.axios.delete('http://localhost:8000/api/productRequests/${id}').then(response =>{
-                    let i=this.productRequests.map(data=>data.id).indexOf(id);
-                    this.productRequests.splice(i, 1)
-                });
+               debugger
+               this.$swal({
+                   title: 'Apakah Anda yakin akan menghapus',
+                   showCloseButton: true,
+                   showCancelButton: true,
+               }).then((result) => {
+                   if (result.isConfirmed) {
+                       this.axios.delete(`http://localhost:8000/api/product_requests/${id}`).then(response =>{
+                           let i = this.productRequests.data.map(data => data.id).indexOf(id);
+                           this.productRequests.data.splice(i, 1)
+                       });
+                   }
+               }) 
+                
             }
         }
     } 
