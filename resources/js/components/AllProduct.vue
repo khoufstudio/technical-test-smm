@@ -1,30 +1,32 @@
 <template>
     <div>
         <h2 class="text-center">Permintaan Barang</h2>
-        <button class="btn btn-danger float-right mb-2" data-toggle="modal" data-target="#productModal" data-backdrop="static" data-keyboard="false">Tambah</button>
+        <button class="btn btn-success float-right mb-2" data-toggle="modal" data-target="#productModal" data-backdrop="static" data-keyboard="false">Tambah</button>
         <table class="table">
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Name</th>
-                    <th>Detail</th>
+                    <th>Nama Pemesanan</th>
+                    <th>Tanggal Pesanan</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="product, index in products" :key="product.id">
-                    <td>{{++index}}</td>
-                    <td>{{product.name}}</td>
-                    <td>{{product.detail}}</td>
+                <tr v-for="productRequest, index in productRequests.data" :key="index">
+                    <td>{{index + currentPage}}</td>
+                    <td>{{ productRequest.customer.name }}</td>
+                    <td>{{ productRequest.date_product_request }}</td>
                     <td>
                         <div class="btn-group" role="group">
-                            <router-link :to="{name: 'edit', params: {id: product.id}}" class="btn btn-success">Edit</router-link>
-                            <button class="btn btn-danger" @click="deleteProduct(product.id)">Delete</button>
+                            <router-link :to="{name: 'edit', params: {id: productRequest.id}}" class="btn btn-success">Edit</router-link>
+                            <button class="btn btn-danger" @click="deleteProduct(productRequest.id)">Delete</button>
                         </div>
                     </td>
                 </tr>
             </tbody>
         </table>
+
+        <pagination align="right" :data="productRequests" @pagination-change-page="list"></pagination>
 
         <div id="productModal" class="modal" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-lg" role="document">
@@ -51,24 +53,36 @@
 </template>
 
 <script>
-    export default{
+    import pagination from 'laravel-vue-pagination'
+    export default {
+       components: {
+           pagination
+       },
        data(){
          return{
-           products:[
+           productRequests:[
              {id: 1, name: 'coy', detail: 'cuy'}
-           ]
+           ],
+           currentPage: 1
          }
         },
-       created(){
-            this.axios.get('http://localhost:8000/api/products/').then(response => {
-                this.products = response.data;
-             });
+        mounted() {
+            this.list()
         },
+
        methods:{
+           async list(page = 1) {
+              await axios.get(`http://localhost:8000/api/product_requests?page=${page}`).then(({data})=>{
+                 this.productRequests = data
+                 this.currentPage = page > 1 ? page * 10 + 1 : page
+              }).catch(({ response })=>{
+                 console.error(response)
+              })
+           },
            deleteProduct(id){
-                this.axios.delete('http://localhost:8000/api/products/${id}').then(response =>{
-                    let i=this.products.map(data=>data.id).indexOf(id);
-                    this.products.splice(i, 1)
+                this.axios.delete('http://localhost:8000/api/productRequests/${id}').then(response =>{
+                    let i=this.productRequests.map(data=>data.id).indexOf(id);
+                    this.productRequests.splice(i, 1)
                 });
             }
         }
