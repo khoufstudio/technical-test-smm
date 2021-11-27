@@ -30,7 +30,7 @@
 
         <div id="productModal" class="modal" tabindex="-1" role="dialog">
             <form @submit.prevent="addProductRequest">
-                <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-dialog modal-xl" role="document">
                     <div class="modal-content">
                         <div class="modal-header bg-primary">
                             <h5 class="modal-title text-white">Tambah Permintaan Barang</h5>
@@ -70,6 +70,37 @@
                                         <label class="mb-0" for="tanggal_permintaan">Tanggal Permintaan:</label>
                                        <input type="date" class="form-control" v-model="orderDate">
                                     </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Barang</th>
+                                                <th scope="col">Lokasi</th>
+                                                <th scope="col">Tersedia</th>
+                                                <th scope="col">Kuantiti</th>
+                                                <th scope="col">Keterangan</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">*</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">1</th>
+                                                <td>Mark</td>
+                                                <td>Otto</td>
+                                                <td>@mdo</td>
+                                                <td>@mdo</td>
+                                                <td>@mdo</td>
+                                                <td>@mdo</td>
+                                                <td>@mdo</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
