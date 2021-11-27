@@ -24,11 +24,16 @@ import VueAxios from 'vue-axios';
 import VueRouter from 'vue-router';
 import VueSweetalert2 from 'vue-sweetalert2';
 import vSelect from 'vue-select'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 import axios from 'axios';
 import {
     routes
 } from './routes';
+
+library.add(faUserSecret)
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -43,6 +48,7 @@ Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
 Vue.use(VueSweetalert2);
 Vue.component('v-select', vSelect)
+Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 const router = new VueRouter({
     mode: 'history',
