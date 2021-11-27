@@ -16,14 +16,21 @@ class CreateProductRequestListsTable extends Migration
         Schema::create('product_request_lists', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('product_request_id');
-            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('product_id')->nullable();
             $table->integer('quantity');
             $table->string('description');
             $table->timestamps();
 
             // define foreign key
-            $table->foreign('product_request_id')->references('id')->on('product_requests');
-            $table->foreign('product_id')->references('id')->on('products');
+            $table->foreign('product_request_id')->references('id')->on('product_requests')
+                  ->constrained()
+                  ->onUpdate('cascade')
+                  ->onDelete('cascade');
+
+            $table->foreign('product_id')->references('id')->on('products')
+                  ->constrained()
+                  ->onUpdate('cascade')
+                  ->onDelete('set null');
         });
     }
 
