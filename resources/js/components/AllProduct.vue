@@ -117,7 +117,19 @@
               })
            },
            addProductRequest() {
-               alert('coy')
+               if (this.orderDate == '' || this.idCustomer == '') {
+                   this.$swal('Isi terlebih dahulu tanggal dan nik')
+               } else {
+                   const inputPost = {
+                       idCustomer: this.idCustomer,
+                       orderDate: this.orderDate
+                   }
+                   this.axios.post(`http://localhost:8000/api/product_requests`, inputPost).then(response =>{
+                       if (response.data == "Product Request created!") {
+                           this.$swal('Alhamdulillah Success')
+                       }
+                   })
+               }
            },
            deleteProduct(id){
                this.$swal({
