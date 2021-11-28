@@ -117,7 +117,7 @@
                                                 </td>
                                             </tr>
                                             <tr v-if="productsSubmit.length == 0">
-                                                <td colspan="9" class="text-center">Tidak ada data</td>
+                                                <td colspan="9" class="text-center">Tidak ada barang / barang belum ditambahkan</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -139,7 +139,7 @@
                                 </ul>
                             </div>
                             <div>
-                                <button type="submit" class="btn btn-primary">Proses</button>
+                                <button type="submit" class="btn btn-primary" :disabled="isDisabled">Proses</button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
                             </div>
                         </div>
@@ -271,6 +271,11 @@
                    this.productsSubmit.splice(indexCurrent, 1)
                }
            }
+        },
+        computed: {
+            isDisabled: function() {
+                return this.productsSubmit.length == 0
+            }
         }
     } 
 </script>
