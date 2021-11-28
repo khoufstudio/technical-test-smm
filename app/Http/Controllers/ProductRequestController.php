@@ -18,7 +18,6 @@ class ProductRequestController extends Controller
 
     public function store(Request $request)
     {
-        //dd($request->input());
         $productRequest = new ProductRequest([
             'customer_id' => $request->input('idCustomer'),
             'date_product_request' => $request->input('orderDate') 
