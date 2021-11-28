@@ -21,6 +21,7 @@
                     <td>{{ productRequest.date_product_request }}</td>
                     <td>
                         <div class="btn-group" role="group">
+                            <button class="btn btn-info text-white" @click="previewProductRequest(productRequest.id)">Lihat</button>
                             <button class="btn btn-danger" @click="deleteProduct(productRequest.id)">Hapus</button>
                         </div>
                     </td>
@@ -30,12 +31,12 @@
 
         <pagination align="right" :data="productRequests" @pagination-change-page="list"></pagination>
 
-        <div id="productModal" class="modal" tabindex="-1" role="dialog">
+        <div id="productModal" class="modal" tabindex="-1" role="dialog" ref="productModal">
             <form @submit.prevent="addProductRequest">
                 <div class="modal-dialog modal-xl" role="document">
                     <div class="modal-content">
                         <div class="modal-header bg-primary">
-                            <h5 class="modal-title text-white">Tambah Permintaan Barang</h5>
+                            <h5 class="modal-title text-white">{{ action }} Permintaan Barang</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -140,8 +141,8 @@
                                 </ul>
                             </div>
                             <div>
-                                <button type="submit" class="btn btn-primary" :disabled="isDisabled">Proses</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                <button v-if="action == 'Tambah'" type="submit" class="btn btn-primary" :disabled="isDisabled">Proses</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ action == 'Tambah' ? 'Batal' : 'Kembali' }}</button>
                             </div>
                         </div>
                     </div>
@@ -162,6 +163,7 @@
        },
        data() {
            return {
+               action: 'Tambah',
                productRequests:[],
                currentPage: 1,
                options: [],
@@ -176,6 +178,7 @@
         },
         mounted() {
             this.list()
+            $(this.$refs.productModal).on("hidden.bs.modal", this.hiddenModal)
         },
         methods: {
            async list(page = 1) {
@@ -222,6 +225,27 @@
                        }
                    })
                }
+           },
+           hiddenModal() {
+               this.action = 'Tambah'
+           },
+           previewProductRequest(id) {
+               axios.get(`http://localhost:8000/api/product_requests/detail/${id}`).then(res =>{
+                         console.log(res)
+               })
+
+                   
+               this.action = 'Lihat'
+               this.name = 'test'
+               this.label = 'test'
+               this.departement = 'test'
+               this.idCustomer = 2
+               this.orderDate = '2021-11-08'
+               
+               console.log(id)
+               
+
+               $('#productModal').modal('show')
            },
            deleteProduct(id){
                this.$swal({
