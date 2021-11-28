@@ -51,6 +51,8 @@
                                             :options="options" 
                                             @search="onSearch" 
                                             @input="setSelected" 
+                                            v-model="selectedNIK"
+                                            :disabled="action == 'Lihat'"
                                         ></v-select>
                                     </div>
                                 </div>
@@ -71,7 +73,7 @@
                                 <div class="col-4">
                                     <div class="form-group">
                                         <label class="mb-0" for="tanggal_permintaan">Tanggal Permintaan*:</label>
-                                       <input type="date" class="form-control" v-model="orderDate">
+                                           <input type="date" class="form-control" v-model="orderDate" :disabled="action == 'Lihat'">
                                     </div>
                                 </div>
                             </div>
@@ -173,7 +175,8 @@
                orderDate: '',
                idCustomer: '',
                productsSubmit: [],
-               selected: {} 
+               selected: {},
+               selectedNIK: ''
             }
         },
         mounted() {
@@ -211,13 +214,7 @@
                                    // close modal 
                                    $('#productModal').modal('hide')
 
-                                   // clear data
-                                   this.name = ''
-                                   this.label = ''
-                                   this.orderDate = ''
-                                   this.idCustomer = ''
-                                   this.departement = ''
-                                   this.productsSubmit = []
+                                   this.clearModalData()
                                }
                            })
                        } else {
@@ -228,22 +225,30 @@
            },
            hiddenModal() {
                this.action = 'Tambah'
+               this.clearModalData()
+           },
+           clearModalData() {
+               // clear data
+               this.name = ''
+               this.label = ''
+               this.orderDate = ''
+               this.idCustomer = ''
+               this.selectedNIK = ''
+               this.departement = ''
+               this.productsSubmit = []
            },
            previewProductRequest(id) {
+               this.action = 'Lihat'
                axios.get(`http://localhost:8000/api/product_requests/detail/${id}`).then(res =>{
-                         console.log(res)
+                   let result = res.data
+                   console.log(result)
+                   this.orderDate = result.date_product_request.split("/").reverse().join("-")
+                   this.name = result.customer.name               
+                   this.departement = result.customer.departement
+                   this.options = [{ label: result.customer.nik }]
+                   this.selectedNIK = result.customer.nik
                })
 
-                   
-               this.action = 'Lihat'
-               this.name = 'test'
-               this.label = 'test'
-               this.departement = 'test'
-               this.idCustomer = 2
-               this.orderDate = '2021-11-08'
-               
-               console.log(id)
-               
 
                $('#productModal').modal('show')
            },
