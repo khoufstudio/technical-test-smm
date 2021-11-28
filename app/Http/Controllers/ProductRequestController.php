@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Product;
 use App\Models\ProductRequest;
+use App\Models\ProductRequestList;
 
 class ProductRequestController extends Controller
 {
@@ -16,11 +18,28 @@ class ProductRequestController extends Controller
 
     public function store(Request $request)
     {
+        //dd($request->input());
         $productRequest = new ProductRequest([
             'customer_id' => $request->input('idCustomer'),
             'date_product_request' => $request->input('orderDate') 
         ]);
         $productRequest->save();
+
+        // save product_request_list
+        foreach ($request->input('productSubmit') as $productSubmit) {
+            $productRequestList = new ProductRequestList([
+                'product_request_id' => $productRequest->id,
+                'product_id' => $productSubmit['productId'],
+                'quantity' => $productSubmit['quantity'],
+                'description' => $productSubmit['description'],
+            ]);
+
+            $productRequestList->save();
+
+            // decrement stock
+            $product = Product::find($productSubmit['productId']);
+            $product->decrement('stock', $productSubmit['quantity']);
+        } 
 
         return response()->json('Product Request created!');
     }

@@ -156,7 +156,7 @@
            departement: '',
            orderDate: '',
            idCustomer: '',
-           productsSubmit: [{location: '', quantity: 1, description: '-'}],
+           productsSubmit: [{location: '', quantity: 1, description: '-', productId: ''}],
            selected: {} 
          }
         },
@@ -174,7 +174,7 @@
               })
            },
            addInputProduct() {
-               this.productsSubmit.push({location: '', quantity: 1, description: '-'})
+               this.productsSubmit.push({location: '', quantity: 1, description: '-', productId: ''})
            },
            addProductRequest() {
                if (this.orderDate == '' || this.idCustomer == '') {
@@ -251,6 +251,7 @@
                    this.productsSubmit[indexCurrent].location = product.location
                    this.productsSubmit[indexCurrent].stock = product.stock
                    this.productsSubmit[indexCurrent].packaging = product.packaging
+                   this.productsSubmit[indexCurrent].productId = product.id
                }
            },
            deleteItem(index) {
