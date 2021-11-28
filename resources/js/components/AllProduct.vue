@@ -109,7 +109,9 @@
                                                 <td><input class="form-control" type="number" v-model="productsSubmit[index-1].quantity"></td>
                                                 <td><input class="form-control" type="text" v-model="productsSubmit[index-1].packaging" disabled=""></td>
                                                 <td><input class="form-control" type="text" v-model="productsSubmit[index-1].description"></td>
-                                                <td><span class="badge badge-success">Terpenuhi</span></td>
+                                                <td>
+                                                    <span v-html="setAvailibility(index - 1)"></span>
+                                                </td>
                                                 <td>
                                                     <button type="button" @click="deleteItem(index)" class="btn rounded-circle">
                                                         <font-awesome-icon class="text-secondary" icon="times-circle" />
@@ -270,6 +272,17 @@
                if (indexCurrent != -1) {
                    this.productsSubmit.splice(indexCurrent, 1)
                }
+           },
+           setAvailibility(index) {
+               let currentProduct = this.productsSubmit[index]
+               if (currentProduct.stock > currentProduct.quantity) {
+                   return '<span class="badge badge-success">Terpenuhi</span>'
+               } else if (currentProduct.stock === 0) {
+                   return '<span class="badge badge-danger">Kosong</span>'
+               } else {
+                   return '<span class="badge badge-danger">Tidak Terpenuhi</span>'
+               }
+               
            }
         },
         computed: {
