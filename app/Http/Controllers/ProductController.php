@@ -11,7 +11,7 @@ class ProductController extends Controller
         $productName = $request->input('name');
 
         if ($productName) {
-            $products = Product::where('name', 'LIKE', '%'. $productName. '%')->get()->toArray();
+            $products = Product::select('name as label', 'location', 'stock', 'packaging')->where('name', 'LIKE', '%'. $productName. '%')->get()->toArray();
         } else {
             $products = Product::all()->toArray();
         }
