@@ -15,7 +15,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="productRequest, index in productRequests.data" :key="index">
+                <tr  v-for="productRequest, index in productRequests.data" :key="index">
                     <td>{{index + currentPage}}</td>
                     <td>{{ productRequest.customer.name }}</td>
                     <td>{{ productRequest.date_product_request }}</td>
@@ -94,8 +94,8 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr v-for="(product, index) in productsSubmit" :key="index">
-                                                <th scope="row">{{++index}}</th>
+                                            <tr v-if="productsSubmit.length > 0" v-for="(product, index) in productsSubmit" :key="index">
+                                                <td scope="row">{{++index}}</td>
                                                 <td>
                                                     <v-select 
                                                         :filterable="false" 
@@ -115,6 +115,9 @@
                                                         <font-awesome-icon class="text-secondary" icon="times-circle" />
                                                     </button>
                                                 </td>
+                                            </tr>
+                                            <tr v-if="productsSubmit.length == 0">
+                                                <td colspan="9" class="text-center">Tidak ada data</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -156,7 +159,8 @@
            departement: '',
            orderDate: '',
            idCustomer: '',
-           productsSubmit: [{location: '', quantity: 1, description: '-', productId: ''}],
+           /*productsSubmit: [{location: '', quantity: 1, description: '-', productId: ''}],*/
+           productsSubmit: [],
            selected: {} 
          }
         },
