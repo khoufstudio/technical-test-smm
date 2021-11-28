@@ -225,9 +225,14 @@
            },
            deleteProduct(id){
                this.$swal({
-                   title: 'Apakah Anda yakin akan menghapus',
-                   showCloseButton: true,
-                   showCancelButton: true,
+                  title: 'Apakah Anda yakin akan menghapus',
+                  text: "Anda tidak tidak dapat mengembalikannya",
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Ya, hapus saja',
+                  cancelButtonText: 'Tidak',
                }).then((result) => {
                    if (result.isConfirmed) {
                        this.axios.delete(`http://localhost:8000/api/product_requests/${id}`).then(response =>{
