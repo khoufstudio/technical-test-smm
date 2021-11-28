@@ -64,7 +64,7 @@ class ProductRequestController extends Controller
 
     public function detail($id)
     {
-        $productRequest = ProductRequest::with('customer')->find($id);
+        $productRequest = ProductRequest::with('customer')->with('product_request_list.product')->find($id);
 
         return response()->json($productRequest);
     }

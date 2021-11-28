@@ -15,6 +15,11 @@ class ProductRequest extends Model
         return $this->belongsTo(Customer::class);
     }
 
+    public function product_request_list()
+    {
+        return $this->hasMany(ProductRequestList::class);
+    }
+
     public function getDateProductRequestAttribute($value)
     {
         return date('d/m/Y', strtotime($value));
