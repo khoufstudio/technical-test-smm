@@ -158,25 +158,23 @@
        components: {
            pagination
        },
-       data(){
-         return{
-           productRequests:[],
-           currentPage: 1,
-           options: [],
-           optionProducts: [],
-           name: '',
-           departement: '',
-           orderDate: '',
-           idCustomer: '',
-           /*productsSubmit: [{location: '', quantity: 1, description: '-', productId: ''}],*/
-           productsSubmit: [],
-           selected: {} 
-         }
+       data() {
+           return {
+               productRequests:[],
+               currentPage: 1,
+               options: [],
+               optionProducts: [],
+               name: '',
+               departement: '',
+               orderDate: '',
+               idCustomer: '',
+               productsSubmit: [],
+               selected: {} 
+            }
         },
         mounted() {
             this.list()
         },
-
         methods: {
            async list(page = 1) {
               await axios.get(`http://localhost:8000/api/product_requests?page=${page}`).then(({data})=> {
