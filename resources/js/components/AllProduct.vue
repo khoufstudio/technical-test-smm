@@ -111,7 +111,7 @@
                                                 <td><input class="form-control" type="text"></td>
                                                 <td><span class="badge badge-success">Terpenuhi</span></td>
                                                 <td>
-                                                    <button class="btn rounded-circle">
+                                                    <button type="button" @click="deleteItem(index)" class="btn rounded-circle">
                                                         <font-awesome-icon class="text-secondary" icon="times-circle" />
                                                     </button>
                                                 </td>
@@ -251,7 +251,13 @@
                    this.productsSubmit[indexCurrent].stock = product.stock
                    this.productsSubmit[indexCurrent].packaging = product.packaging
                }
+           },
+           deleteItem(index) {
+               const indexCurrent = index - 1
+               if (indexCurrent != -1) {
+                   this.productsSubmit.splice(indexCurrent, 1)
+               }
            }
-        },
+        }
     } 
 </script>
