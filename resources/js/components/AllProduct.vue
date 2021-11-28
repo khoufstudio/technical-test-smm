@@ -87,12 +87,12 @@
                                                 <th>#</th>
                                                 <th style="width: 250px;">Barang</th>
                                                 <th>Lokasi</th>
-                                                <th>Tersedia</th>
+                                                <th v-if="action == 'Tambah'">Tersedia</th>
                                                 <th>Kuantiti</th>
                                                 <th>Satuan</th>
                                                 <th>Keterangan</th>
-                                                <th>Status</th>
-                                                <th class="text-center" style="width: 5px;">*</th>
+                                                <th v-if="action == 'Tambah'">Status</th>
+                                                <th v-if="action == 'Tambah'" class="text-center" style="width: 5px;">*</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -100,21 +100,23 @@
                                                 <td scope="row">{{++index}}</td>
                                                 <td>
                                                     <v-select 
+                                                        v-if="action == 'Tambah'"
                                                         :filterable="false" 
                                                         :options="optionProducts" 
                                                         @search="onSearchProduct" 
                                                         @input="(product) => updateProduct(product, index)"
                                                     ></v-select>
+                                                    <input v-if="action == 'Lihat'" class="form-control" type="text" v-model="productsSubmit[index-1].name" disabled="">
                                                 </td>
                                                 <td><input class="form-control" type="text" v-model="productsSubmit[index-1].location" disabled=""></td>
-                                                <td><input class="form-control" type="text" v-model="productsSubmit[index-1].stock" disabled=""></td>
-                                                <td><input class="form-control" type="number" v-model="productsSubmit[index-1].quantity"></td>
+                                                <td v-if="action == 'Tambah'"><input class="form-control" type="text" v-model="productsSubmit[index-1].stock" disabled=""></td>
+                                                <td><input :disabled="action == 'Lihat'" class="form-control" type="number" v-model="productsSubmit[index-1].quantity"></td>
                                                 <td><input class="form-control" type="text" v-model="productsSubmit[index-1].packaging" disabled=""></td>
-                                                <td><input class="form-control" type="text" v-model="productsSubmit[index-1].description"></td>
-                                                <td>
+                                                <td><input :disabled="action == 'Lihat'" class="form-control" type="text" v-model="productsSubmit[index-1].description"></td>
+                                                <td v-if="action == 'Tambah'">
                                                     <span v-html="setAvailibility(index - 1)"></span>
                                                 </td>
-                                                <td>
+                                                <td v-if="action == 'Tambah'">
                                                     <button type="button" @click="deleteItem(index)" class="btn rounded-circle">
                                                         <font-awesome-icon class="text-secondary" icon="times-circle" />
                                                     </button>
@@ -135,7 +137,7 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-between modal-footer">
-                            <div>
+                            <div v-if="action == 'Tambah'">
                                 <p class="mb-0 font-weight-bold">Aturan:</p>
                                 <ul class="pl-3">
                                     <li>NIK Peminta dan Tanggal Permintaan wajib diisi</li>
@@ -241,12 +243,25 @@
                this.action = 'Lihat'
                axios.get(`http://localhost:8000/api/product_requests/detail/${id}`).then(res =>{
                    let result = res.data
-                   console.log(result)
                    this.orderDate = result.date_product_request.split("/").reverse().join("-")
                    this.name = result.customer.name               
                    this.departement = result.customer.departement
                    this.options = [{ label: result.customer.nik }]
                    this.selectedNIK = result.customer.nik
+
+                   let index = 0
+                   for (let prl of result.product_request_list) {
+                       console.log(prl)
+                       this.productsSubmit[index] = {
+                           description: prl.description,
+                           location: prl.product.location,
+                           name: prl.product.name,
+                           quantity: prl.quantity,
+                           packaging: prl.product.packaging
+                       }
+
+                       index++
+                   }
                })
 
 
