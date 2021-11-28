@@ -127,7 +127,7 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <div class="d-flex justify-content-end">
+                                    <div v-if="action == 'Tambah'" class="d-flex justify-content-end">
                                         <button type="button" class="btn btn-success" @click="addInputProduct">
                                             <font-awesome-icon icon="plus" />
                                             Tambah
