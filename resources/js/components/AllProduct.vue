@@ -187,7 +187,7 @@
               })
            },
            addInputProduct() {
-               this.productsSubmit.push({location: '', quantity: 1, description: '-', productId: ''})
+               this.productsSubmit.push({location: '', quantity: 1, description: '-', productId: '', valid: false})
            },
            addProductRequest() {
                if (this.orderDate == '' || this.idCustomer == '') {
@@ -275,7 +275,10 @@
            },
            setAvailibility(index) {
                let currentProduct = this.productsSubmit[index]
+               this.productsSubmit[index].valid = false
+
                if (currentProduct.stock > currentProduct.quantity) {
+                   this.productsSubmit[index].valid = true
                    return '<span class="badge badge-success">Terpenuhi</span>'
                } else if (currentProduct.stock === 0) {
                    return '<span class="badge badge-danger">Kosong</span>'
@@ -287,7 +290,18 @@
         },
         computed: {
             isDisabled: function() {
-                return this.productsSubmit.length == 0
+                let isValid = false
+                if (this.productsSubmit.length > 0) {
+                    for (let ps of this.productsSubmit) {
+                        if (ps.valid == true) {
+                            isValid = true
+                            break
+                        } 
+                    }
+                }
+                return !isValid
+                    || this.idCustomer == ''
+                    || this.orderDate == ''
             }
         }
     } 
