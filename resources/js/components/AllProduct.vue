@@ -94,20 +94,20 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr v-for="(product, index) in products" :key="index">
+                                            <tr v-for="(product, index) in productsSubmit" :key="index">
                                                 <th scope="row">{{++index}}</th>
                                                 <td>
                                                     <v-select 
                                                         :filterable="false" 
                                                         :options="optionProducts" 
                                                         @search="onSearchProduct" 
-                                                        @input="setSelectedProduct" 
+                                                        @input="(product) => updateProduct(product, index)"
                                                     ></v-select>
                                                 </td>
-                                                <td><input class="form-control" type="text" disabled=""></td>
-                                                <td><input class="form-control" type="text" disabled=""></td>
+                                                <td><input class="form-control" type="text" v-model="productsSubmit[index-1].location" disabled=""></td>
+                                                <td><input class="form-control" type="text" v-model="productsSubmit[index-1].stock" disabled=""></td>
                                                 <td><input class="form-control" type="text"></td>
-                                                <td><input class="form-control" type="text" disabled=""></td>
+                                                <td><input class="form-control" type="text" v-model="productsSubmit[index-1].packaging" disabled=""></td>
                                                 <td><input class="form-control" type="text"></td>
                                                 <td><span class="badge badge-success">Terpenuhi</span></td>
                                                 <td>
@@ -156,7 +156,8 @@
            departement: '',
            orderDate: '',
            idCustomer: '',
-           products: [1]
+           productsSubmit: [{ location: ''}],
+           selected: {} 
          }
         },
         mounted() {
@@ -173,7 +174,7 @@
               })
            },
            addInputProduct() {
-               this.products.push(1)
+               this.productsSubmit.push({location: ''})
            },
            addProductRequest() {
                if (this.orderDate == '' || this.idCustomer == '') {
@@ -229,31 +230,28 @@
                    loading(false)
                })
            }),
-           setSelectedProduct(event) {
-               if (event) {
-                   this.name = event.name
-                   this.departement = event.departement
-                   this.idCustomer = event.id
-               } else {
-                   this.name = ''
-                   this.departement = ''
-                   this.idCustomer = ''
-               }
-           },
            onSearchProduct(search, loading) {
                if (search.length) {
                    loading(true)
-                   this.search(loading, search, this)
+                   this.searchProduct(loading, search, this)
                } 
            },
            searchProduct: _.debounce((loading, search, vm) => {
-               axios.get(`http://localhost:8000/api/customer/nik/${search}`).then(res =>{
+               axios.get(`http://localhost:8000/api/products?name=${search}`).then(res =>{
                    if (res) {
-                       vm.options = res.data
+                       vm.optionProducts = res.data
                    }
                    loading(false)
                })
-           })
+           }),
+           updateProduct(product, index) {
+               const indexCurrent = index - 1
+               if (product) {
+                   this.productsSubmit[indexCurrent].location = product.location
+                   this.productsSubmit[indexCurrent].stock = product.stock
+                   this.productsSubmit[indexCurrent].packaging = product.packaging
+               }
+           }
         },
     } 
 </script>
