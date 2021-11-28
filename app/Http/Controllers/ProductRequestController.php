@@ -61,4 +61,12 @@ class ProductRequestController extends Controller
 
         return response()->json('Product deleted!');
     }
+
+    public function detail($id)
+    {
+        $productRequest = ProductRequest::with('customer')->find($id);
+
+        return response()->json($productRequest);
+    }
+
 }

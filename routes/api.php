@@ -21,4 +21,5 @@ Route::middleware('api')->group(function () {
     Route::resource('products', ProductController::class);
     Route::resource('product_requests', ProductRequestController::class);
     Route::get('customer/nik/{nik}', [CustomerController::class, 'nik'])->name('customers.search_nik');
+    Route::get('product_requests/detail/{id}', [ProductRequestController::class, 'detail'])->name('product_requests.detail');
 });
