@@ -342,10 +342,8 @@
            },
            setAvailibility(index) {
                let currentProduct = this.productsSubmit[index]
-               this.productsSubmit[index].valid = false
 
                if (currentProduct.stock > currentProduct.quantity) {
-                   this.productsSubmit[index].valid = true
                    return '<span class="badge badge-success">Terpenuhi</span>'
                } else if (currentProduct.stock === 0) {
                    return '<span class="badge badge-danger">Kosong</span>'
@@ -357,19 +355,22 @@
         },
         computed: {
             isDisabled: function() {
-                let isValid = false
+                let isValid = true
                 if (this.productsSubmit.length > 0) {
                     for (let ps of this.productsSubmit) {
-                        if (ps.valid == true) {
-                            isValid = true
+                        if (ps.stock < ps.quantity) {
+                            isValid = false
                             break
-                        } 
+                        } else if (ps.stock == 0) {
+                            isValid = false
+                            break
+                        }
                     }
                 }
                 return !isValid
                     || this.idCustomer == ''
                     || this.orderDate == ''
             }
-        }
+        } 
     } 
 </script>
