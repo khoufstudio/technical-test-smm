@@ -45,7 +45,7 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="form-group">
-                                        <label class="mb-0" for="nama">NIK Peminta:</label>
+                                        <label class="mb-0" for="nama">NIK Peminta*:</label>
                                         <v-select 
                                             :filterable="false" 
                                             :options="options" 
@@ -70,7 +70,7 @@
                             <div class="row mb-2">
                                 <div class="col-4">
                                     <div class="form-group">
-                                        <label class="mb-0" for="tanggal_permintaan">Tanggal Permintaan:</label>
+                                        <label class="mb-0" for="tanggal_permintaan">Tanggal Permintaan*:</label>
                                        <input type="date" class="form-control" v-model="orderDate">
                                     </div>
                                 </div>
@@ -130,9 +130,18 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Proses</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                        <div class="d-flex justify-content-between modal-footer">
+                            <div>
+                                <p class="mb-0 font-weight-bold">Aturan:</p>
+                                <ul class="pl-3">
+                                    <li>NIK Peminta dan Tanggal Permintaan wajib diisi</li>
+                                    <li>Barang Wajib ditambahkan minimal 1 barang, dengan status <strong>tersedia</strong></li>
+                                </ul>
+                            </div>
+                            <div>
+                                <button type="submit" class="btn btn-primary">Proses</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                            </div>
                         </div>
                     </div>
                 </div>
