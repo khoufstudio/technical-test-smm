@@ -154,6 +154,7 @@
 <script>
     import pagination from 'laravel-vue-pagination'
     import _ from 'lodash'
+    import $ from 'jquery'
 
     export default {
        components: {
@@ -199,7 +200,25 @@
                    }
                    this.axios.post(`http://localhost:8000/api/product_requests`, inputPost).then(response =>{
                        if (response.data == "Product Request created!") {
-                           this.$swal('Alhamdulillah Success')
+                           this.$swal({
+                               icon: 'success',
+                               text: 'Alhamdulillah Success'
+                           }).then(res => {
+                               if (res.isConfirmed) {
+                                   // close modal 
+                                   $('#productModal').modal('hide')
+
+                                   // clear data
+                                   this.name = ''
+                                   this.label = ''
+                                   this.orderDate = ''
+                                   this.idCustomer = ''
+                                   this.departement = ''
+                                   this.productsSubmit = []
+                               }
+                           })
+                       } else {
+                           this.$swal('Maaf tambah data gagal')
                        }
                    })
                }
