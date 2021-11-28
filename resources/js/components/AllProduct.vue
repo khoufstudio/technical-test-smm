@@ -106,9 +106,9 @@
                                                 </td>
                                                 <td><input class="form-control" type="text" v-model="productsSubmit[index-1].location" disabled=""></td>
                                                 <td><input class="form-control" type="text" v-model="productsSubmit[index-1].stock" disabled=""></td>
-                                                <td><input class="form-control" type="text"></td>
+                                                <td><input class="form-control" type="number" v-model="productsSubmit[index-1].quantity"></td>
                                                 <td><input class="form-control" type="text" v-model="productsSubmit[index-1].packaging" disabled=""></td>
-                                                <td><input class="form-control" type="text"></td>
+                                                <td><input class="form-control" type="text" v-model="productsSubmit[index-1].description"></td>
                                                 <td><span class="badge badge-success">Terpenuhi</span></td>
                                                 <td>
                                                     <button type="button" @click="deleteItem(index)" class="btn rounded-circle">
@@ -156,7 +156,7 @@
            departement: '',
            orderDate: '',
            idCustomer: '',
-           productsSubmit: [{ location: ''}],
+           productsSubmit: [{location: '', quantity: 1, description: '-'}],
            selected: {} 
          }
         },
@@ -174,7 +174,7 @@
               })
            },
            addInputProduct() {
-               this.productsSubmit.push({location: ''})
+               this.productsSubmit.push({location: '', quantity: 1, description: '-'})
            },
            addProductRequest() {
                if (this.orderDate == '' || this.idCustomer == '') {
@@ -182,7 +182,8 @@
                } else {
                    const inputPost = {
                        idCustomer: this.idCustomer,
-                       orderDate: this.orderDate
+                       orderDate: this.orderDate,
+                       productSubmit: this.productsSubmit
                    }
                    this.axios.post(`http://localhost:8000/api/product_requests`, inputPost).then(response =>{
                        if (response.data == "Product Request created!") {
