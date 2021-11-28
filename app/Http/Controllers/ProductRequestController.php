@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Product;
 use App\Models\ProductRequest;
 use App\Models\ProductRequestList;
@@ -18,6 +19,16 @@ class ProductRequestController extends Controller
 
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'idCustomer' => 'required',
+            'orderDate' => 'required',
+            'productSubmit' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json('Product Request failed!');
+        }
+        
         $productRequest = new ProductRequest([
             'customer_id' => $request->input('idCustomer'),
             'date_product_request' => $request->input('orderDate') 
